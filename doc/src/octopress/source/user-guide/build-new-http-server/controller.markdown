@@ -404,6 +404,21 @@ post("/users") { request: MyPostRequest =>
 
 For more examples, see the [ResponseBuilderTest](https://github.com/twitter/finatra/blob/develop/http/src/test/scala/com/twitter/finatra/http/tests/response/ResponseBuilderTest.scala).
 
+When building more complex responses where the subject is a Future[T] you may map the result of a Future to your ResponseBuilder composition. For example:
+
+```scala
+get("/users") { request =>
+  ...
+  val userSequence = Future[Seq] { List("Paul", "Scott") }
+  
+  userSequence.map(users=>
+    response
+    .ok(users)
+  )
+  
+}
+```
+
 ### Cookies:
 Cookies, like Headers, are read from request and can set via the [`c.t.finatra.http.response.ResponseBuilder`](https://github.com/twitter/finatra/blob/develop/http/src/main/scala/com/twitter/finatra/http/response/ResponseBuilder.scala#L151):
 
